@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
     res.send(db.users); 
 });
 
+// Signin Route
 app.post('/signin', (req, res) => {
     if (req.body.email === db.users[0].email && 
         req.body.password === db.users[0].password){
@@ -41,6 +42,8 @@ app.post('/signin', (req, res) => {
         }
     
 });
+
+// Register Route
 
 app.post('/register', (req, res) => {
     const {email, name, password} = req.body;
@@ -55,7 +58,37 @@ app.post('/register', (req, res) => {
     res.json(db.users[db.users.length-1]);
 
 });
+ 
+//Getting the profile id
+app.get('/profile/:id', (req, res) => {
+    const {id} = req.params;
+    let found = false;
+    db.users.forEach(user => {
+        if(user.id === id) {
+            found = true;
+            return  res.json(user);
+        }
+    })
+    if(!found) {
+        res.status(400).json('not found');
+    }
+});
 
+//Image part
+app.post('/image', (req, res) => {
+    const {id} = req.body;
+    let found = false;
+    db.users.forEach(user => {
+        if(user.id === id) {
+            found = true;
+            user.entries++
+            return  res.json(user.entries);
+        }
+    })
+    if(!found) {
+        res.status(400).json('not found');
+    }
+});
 
 
 
