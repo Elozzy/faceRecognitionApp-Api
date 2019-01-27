@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt-nodejs');
 
 
 const app = express();
@@ -11,7 +12,6 @@ const db = {
             id: '123',
             name: 'john',
             email: 'john@gamil.com',
-            password: 'cookies',
             entries: 0,
             joined: new Date()
         },
@@ -20,9 +20,15 @@ const db = {
             id: '124',
             name: 'sally',
             email: 'sally@gamil.com',
-            password: 'bananas',
             entries: 0,
             joined: new Date()
+        }
+    ],
+    login:[
+        {
+            id: '987',
+            has:'',
+            email: 'john@gmail.com',
         }
     ]
 }
@@ -47,6 +53,10 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     const {email, name, password} = req.body;
+    bcrypt.hash(password, null, null, function(err, hash) {
+        // Store hash in your password DB.
+        console.log(hash);
+    });
     db.users.push({
         id: '125',
         name: name,
@@ -73,7 +83,7 @@ app.get('/profile/:id', (req, res) => {
         res.status(400).json('not found');
     }
 });
-
+ 
 //Image part
 app.post('/image', (req, res) => {
     const {id} = req.body;
@@ -91,8 +101,20 @@ app.post('/image', (req, res) => {
 });
 
 
+//bycrpt-nodejs
 
 
+// // Load hash from your password DB.
+// bcrypt.compare("bacon", hash, function(err, res) {
+//     // res == true
+// });
+// bcrypt.compare("veggies", hash, function(err, res) {
+//     // res = false
+// });
+
+
+
+//server-port
 app.listen(3000, ()=> {
     console.log('app is running on port 3000'); 
 });
