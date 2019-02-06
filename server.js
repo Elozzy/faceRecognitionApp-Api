@@ -39,6 +39,13 @@ app.get('/', (req, res) => {
 
 // Signin Route
 app.post('/signin', (req, res) => {
+    bcrypt.compare("bacon", hash, function(err, res) {
+        // res == true
+    });
+    bcrypt.compare("veggies", hash, function(err, res) {
+        // res = false
+    });
+    
     if (req.body.email === db.users[0].email && 
         req.body.password === db.users[0].password){
         res.json('success');
@@ -53,10 +60,7 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
     const {email, name, password} = req.body;
-    bcrypt.hash(password, null, null, function(err, hash) {
-        // Store hash in your password DB.
-        console.log(hash);
-    });
+ 
     db.users.push({
         id: '125',
         name: name,
@@ -105,12 +109,6 @@ app.post('/image', (req, res) => {
 
 
 // // Load hash from your password DB.
-// bcrypt.compare("bacon", hash, function(err, res) {
-//     // res == true
-// });
-// bcrypt.compare("veggies", hash, function(err, res) {
-//     // res = false
-// });
 
 
 
